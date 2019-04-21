@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CreativerseMod
 {
-    public class Class1
+    public class Loader
     {
     }
 }
