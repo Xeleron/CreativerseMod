@@ -56,6 +56,10 @@ namespace CreativerseMod
                     {
                         "Remove Crafting Notice"
                     });
+                    this.EnableGlider = umfconfig.Read<bool>("Enable Glider", new UMFConfigBool(true, false, false), new string[]
+                    {
+                        "Glider Feature"
+                    });
                     Loader.Log("Finished loading settings.", false);
                 }
             }
@@ -89,5 +93,7 @@ namespace CreativerseMod
         public bool InstantTool;
 
         public bool InfiniteItem;
+
+        public bool EnableGlider;
     }
 }
