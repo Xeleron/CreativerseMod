@@ -5,7 +5,7 @@ using Harmony;
 namespace CreativerseMod.Patches
 {
     [HarmonyPatch(typeof(Stats), "GetStatValue", new Type[]
-    {
+    { 
         typeof(StatType)
     })]
     internal class Patch_CombatStats

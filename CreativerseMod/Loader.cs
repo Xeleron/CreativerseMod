@@ -7,7 +7,7 @@ namespace CreativerseMod
 {
     public class Loader
     {
-        [UMFHarmony(10, false)]
+        [UMFHarmony(11, false)]
         public static void Start()
         {
             Loader.Log("My First Mod v" + UMFMod.GetModVersion().ToString(), true);
