@@ -1,6 +1,5 @@
-﻿using System;
-using BuildVerse;
-using Harmony;
+﻿using BuildVerse;
+using HarmonyLib;
 
 namespace CreativerseMod.Patches
 {
@@ -9,15 +8,15 @@ namespace CreativerseMod.Patches
     {
         public static void Prefix(Combat __instance)
         {
-            MeleeWeapon meleeWeapon = Player.Local.Builder.EquippedTool as MeleeWeapon;
+            var meleeWeapon = Player.Local.Builder.EquippedTool as MeleeWeapon;
             if (meleeWeapon != null && meleeWeapon.GetMeleeTarget() != null)
             {
-                Entity meleeTarget = meleeWeapon.GetMeleeTarget();
-                NPC simComponent = meleeTarget.GetSimComponent<NPC>();
-                if (!meleeTarget.IsPlayer && meleeTarget.IsMob && !simComponent.IsDomesticated && LoaderConfig.Instance.InstantKill)
-                {
-                    EntityManager.Instance.SendToServer(new CombatApplyDOT(Player.Local.Combat, meleeTarget.EntityID, DamageType.Fall, false));
-                }
+                var meleeTarget = meleeWeapon.GetMeleeTarget();
+                var simComponent = meleeTarget.GetSimComponent<NPC>();
+                if (!meleeTarget.IsPlayer && meleeTarget.IsMob && !simComponent.IsDomesticated &&
+                    LoaderConfig.Instance.InstantKill)
+                    EntityManager.Instance.SendToServer(new CombatApplyDOT(Player.Local.Combat, meleeTarget.EntityID,
+                        DamageType.Fall));
             }
         }
     }

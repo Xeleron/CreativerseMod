@@ -1,5 +1,4 @@
-﻿using System;
-using Harmony;
+﻿using HarmonyLib;
 
 namespace CreativerseMod.Patches
 {
@@ -8,11 +7,12 @@ namespace CreativerseMod.Patches
     {
         public static bool Prefix(TamingCollar __instance, float __result)
         {
-            if(LoaderConfig.Instance.InstantTool)
+            if (LoaderConfig.Instance.InstantTool)
             {
                 __result = 0.1f;
                 return false;
             }
+
             return true;
         }
     }

@@ -1,93 +1,80 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UModFramework.API;
 
 namespace CreativerseMod
 {
-    class LoaderConfig
+    internal class LoaderConfig
     {
-        public void Load()
-        {
-            Loader.Log("Loading Settings...", false);
-            try
-            {
-                using (UMFConfig umfconfig = new UMFConfig())
-                {
-                    string a = umfconfig.Read<string>("ConfigVersion", new UMFConfigString("", "", false, false, Array.Empty<string>()), Array.Empty<string>());
-                    if (a != string.Empty && a != LoaderConfig.configVersion)
-                    {
-                        umfconfig.DeleteConfig();
-                        Loader.Log("The config file was outdated and has been deleted. A new config will be generated.", false);
-                    }
-                    umfconfig.Read<bool>("Enabled", new UMFConfigBool(new bool?(true), null, false), Array.Empty<string>());
-                    umfconfig.Read<string>("LoadPriority", new UMFConfigString("Normal", "", false, false, Array.Empty<string>()), Array.Empty<string>());
-                    umfconfig.Write<string>("MinVersion", new UMFConfigString("0.45", "", false, false, Array.Empty<string>()), Array.Empty<string>());
-                    umfconfig.Write<string>("MaxVersion", new UMFConfigString("0.49.99999.99999", "", false, false, Array.Empty<string>()), Array.Empty<string>());
-                    umfconfig.Write<string>("ConfigVersion", new UMFConfigString(LoaderConfig.configVersion, "", false, false, Array.Empty<string>()), Array.Empty<string>());
-                    Loader.Log("Finished UMF Settings.", false);
-                    this.MobsCantHurtYou = umfconfig.Read<bool>("MobsCantHurtYou", new UMFConfigBool(new bool?(true), new bool?(false), false), new string[]
-                    {
-                        "Mobs cant see you"
-                    });
-                    this.FreeCrafting = umfconfig.Read<bool>("FreeCrafting", new UMFConfigBool(new bool?(true), new bool?(false), false), new string[]
-                    {
-                        "Craft any item in Crafting"
-                    });
-                    this.DisableCorruptionDamage = umfconfig.Read<bool>("DisableCorruptionDamage", new UMFConfigBool(new bool?(true), new bool?(false), false), new string[]
-                    {
-                        "Disable Corruption Damage?"
-                    });
-                    this.InstantKill = umfconfig.Read<bool>("InstantKill", new UMFConfigBool(new bool?(true), new bool?(false), false), new string[]
-                    {
-                        "Instant Kill?"
-                    });
-                    this.InstantTool = umfconfig.Read<bool>("Instant Tool", new UMFConfigBool(new bool?(false), new bool?(false), false), new string[]
-                    {
-                        "Instant Tool?"
-                    });
-                    this.InfiniteItem = umfconfig.Read<bool>("InfiniteItem", new UMFConfigBool(new bool?(false), new bool?(false), false), new string[]
-                    {
-                        "Infinite Item?"
-                    });
-                    this.AvoidCraftNotice = umfconfig.Read<bool>("AvoidCraftNotice", new UMFConfigBool(new bool?(false), new bool?(false), false), new string[]
-                    {
-                        "Remove Crafting Notice"
-                    });
-                    Loader.Log("Finished loading settings.", false);
-                }
-            }
-            catch (Exception ex)
-            {
-                Loader.Log(string.Concat(new string[]
-                {
-                    "Error loading mod settings: ",
-                    ex.Message,
-                    " (",
-                    ex.InnerException.Message,
-                    ")"
-                }), false);
-            }
-        }
-
-        public static LoaderConfig Instance { get; } = new LoaderConfig();
-
-        public static readonly string configVersion = "1.0";
-
-        public bool MobsCantHurtYou;
-
-        public bool FreeCrafting;
+        private const string ConfigVersion = "1.0";
 
         public bool AvoidCraftNotice;
 
         public bool DisableCorruptionDamage;
 
+        public bool FreeCrafting;
+
+        public bool InfiniteItem;
+
         public bool InstantKill;
+
+        public bool InstantMining;
 
         public bool InstantTool;
 
-        public bool InfiniteItem;
+        public bool MobsCantHurtYou;
+
+        public bool NoFall;
+
+        public static LoaderConfig Instance { get; } = new LoaderConfig();
+
+        public void Load()
+        {
+            Loader.Log("Loading Settings...");
+            try
+            {
+                using (var umfconfig = new UMFConfig())
+                {
+                    var a = umfconfig.Read("ConfigVersion",
+                        new UMFConfigString("", "", false, false, Array.Empty<string>()), Array.Empty<string>());
+                    if (a != string.Empty && a != ConfigVersion)
+                    {
+                        umfconfig.DeleteConfig();
+                        Loader.Log(
+                            "The config file was outdated and has been deleted. A new config will be generated.");
+                    }
+
+                    umfconfig.Read("Enabled", new UMFConfigBool(true, null), Array.Empty<string>());
+                    umfconfig.Read("LoadPriority",
+                        new UMFConfigString("Normal", "", false, false, Array.Empty<string>()), Array.Empty<string>());
+                    umfconfig.Write("MinVersion", new UMFConfigString("0.45", "", false, false, Array.Empty<string>()),
+                        Array.Empty<string>());
+                    umfconfig.Write("MaxVersion", new UMFConfigString("0.53", "", false, false, Array.Empty<string>()),
+                        Array.Empty<string>());
+                    umfconfig.Write("ConfigVersion",
+                        new UMFConfigString(ConfigVersion, "", false, false, Array.Empty<string>()),
+                        Array.Empty<string>());
+                    Loader.Log("Finished UMF Settings.");
+                    MobsCantHurtYou = umfconfig.Read("MobsCantHurtYou", new UMFConfigBool(true, false),
+                        "Mobs cant see you");
+                    FreeCrafting = umfconfig.Read("FreeCrafting", new UMFConfigBool(true, false),
+                        "Craft any item in Crafting");
+                    DisableCorruptionDamage = umfconfig.Read("DisableCorruptionDamage", new UMFConfigBool(true, false),
+                        "Disable Corruption Damage?");
+                    InstantKill = umfconfig.Read("InstantKill", new UMFConfigBool(true, false), "Instant Kill?");
+                    InstantTool = umfconfig.Read("Instant Tool", new UMFConfigBool(true, false), "Instant Tool?");
+                    InfiniteItem = umfconfig.Read("InfiniteItem", new UMFConfigBool(true, false), "Infinite Item?");
+                    AvoidCraftNotice = umfconfig.Read("AvoidCraftNotice", new UMFConfigBool(true, false),
+                        "Remove Crafting Notice");
+                    InstantMining = umfconfig.Read("InstantMining", new UMFConfigBool(true, false), "InstantMining");
+                    NoFall = umfconfig.Read("NoFall", new UMFConfigBool(true, false), "NoFall");
+                    Loader.Log("Finished loading settings.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Loader.Log(string.Concat("Error loading mod settings: ", ex.Message, " (", ex.InnerException?.Message,
+                    ")"));
+            }
+        }
     }
 }

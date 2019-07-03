@@ -1,26 +1,20 @@
-﻿using System;
-using BuildVerse;
-using Harmony;
+﻿using BuildVerse;
+using HarmonyLib;
 
 namespace CreativerseMod.Patches
 {
-    [HarmonyPatch(typeof(CorruptionChunkSimulation), "HasToxicity", new Type[]
-    {
-        typeof(BlockData)
-    })]
+    [HarmonyPatch(typeof(CorruptionChunkSimulation), "HasToxicity", typeof(BlockData))]
     internal class Patch_CorruptionChunkSimulation
     {
         private static bool Prefix(CorruptionChunkSimulation __instance, BlockData bd, ref bool __result)
         {
-            if (!LoaderConfig.Instance.DisableCorruptionDamage)
-            {
-                return true;
-            }
-            if (BlockDataFluidExtension.IsFluid(bd) || BlockDataFireExtension.IsFire(bd) || bd.ProtoBlock.DefaultToxicity > 0)
+            if (!LoaderConfig.Instance.DisableCorruptionDamage) return true;
+            if (bd.IsFluid() || bd.IsFire() || bd.ProtoBlock.DefaultToxicity > 0)
             {
                 __result = false;
                 return false;
             }
+
             return true;
         }
     }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using BuildVerse;
+﻿using BuildVerse;
 
 namespace CreativerseMod.Helpers
 {
@@ -8,7 +6,7 @@ namespace CreativerseMod.Helpers
     {
         public static void Dispatch(this EntityComponentMessage msg)
         {
-            Component componentObject = msg.ComponentObject;
+            var componentObject = msg.ComponentObject;
             componentObject.SendToServer(msg);
             componentObject.OnComponentMessage(msg);
         }

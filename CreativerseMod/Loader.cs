@@ -7,10 +7,13 @@ namespace CreativerseMod
 {
     public class Loader
     {
-        [UMFHarmony(10, false)]
+        public static ProtoDatabase GetProtoDatabase =>
+            (ProtoDatabase) Util.GetStaticField(typeof(ProtoDatabase), "Instance");
+
+        [UMFHarmony(12)]
         public static void Start()
         {
-            Loader.Log("My First Mod v" + UMFMod.GetModVersion().ToString(), true);
+            Log("Creativerse Mod v" + UMFMod.GetModVersion(), true);
         }
 
         [UMFConfig]
@@ -22,28 +25,20 @@ namespace CreativerseMod
 
         internal static void Log(string text, bool clean = false)
         {
-            using (UMFLog umflog = new UMFLog())
+            using (var umflog = new UMFLog())
             {
                 umflog.Log(text, clean);
             }
         }
 
-        public static ProtoDatabase GetProtoDatabase
-        {
-            get
-            {
-                return (ProtoDatabase)Util.GetStaticField(typeof(ProtoDatabase), "Instance");
-            }
-        }
-
         public static Dictionary<string, ProtoCraft> GetGameCraftings()
         {
-            return Util.GetInstanceField<Dictionary<string, ProtoCraft>>(Loader.GetProtoDatabase, "_protoCraftsByName");
+            return Util.GetInstanceField<Dictionary<string, ProtoCraft>>(GetProtoDatabase, "_protoCraftsByName");
         }
 
         public static Dictionary<string, ProtoItem> GetGameItems()
         {
-            return Util.GetInstanceField<Dictionary<string, ProtoItem>>(Loader.GetProtoDatabase, "_protoItemsByName");
+            return Util.GetInstanceField<Dictionary<string, ProtoItem>>(GetProtoDatabase, "_protoItemsByName");
         }
     }
 }

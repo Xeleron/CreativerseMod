@@ -1,7 +1,6 @@
-﻿using System;
-using BuildVerse;
+﻿using BuildVerse;
 using CreativerseMod.Helpers;
-using Harmony;
+using HarmonyLib;
 
 namespace CreativerseMod.Patches
 {
@@ -13,14 +12,16 @@ namespace CreativerseMod.Patches
         {
             if (LoaderConfig.Instance.FreeCrafting)
             {
-                ProtoCraft protoCraft = Util.GetInstanceField<ProtoCraft>(__instance, "_currentCraft");
-                if(Player.Local.Crafting.IsUnlocked(protoCraft))
+                var protoCraft = Util.GetInstanceField<ProtoCraft>(__instance, "_currentCraft");
+                if (Player.Local.Crafting.IsUnlocked(protoCraft))
                 {
                     __instance.CraftButton.isEnabled = true;
                     return false;
                 }
+
                 return true;
             }
+
             return true;
         }
     }

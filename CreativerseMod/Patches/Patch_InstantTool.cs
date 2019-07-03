@@ -1,5 +1,4 @@
-﻿using System;
-using Harmony;
+﻿using HarmonyLib;
 
 namespace CreativerseMod.Patches
 {

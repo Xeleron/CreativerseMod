@@ -1,6 +1,5 @@
-﻿using System;
-using BehaviorDesigner.Runtime.Tasks;
-using Harmony;
+﻿using BehaviorDesigner.Runtime.Tasks;
+using HarmonyLib;
 
 namespace CreativerseMod.Patches
 {
@@ -15,6 +14,7 @@ namespace CreativerseMod.Patches
                 __result = TaskStatus.Failure;
                 return false;
             }
+
             return true;
         }
     }
